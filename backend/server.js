@@ -3,8 +3,11 @@ import { chats } from "./data.js";
 import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
+import connectDB from "./database.js";
 
 const app = express();
+
+connectDB();
 
 app.use(
   cors({

@@ -1,5 +1,3 @@
-// mongodb+srv://rajat_03:hashtag2001@backend.8ygd85r.mongodb.net/"
-
 import mongoose from "mongoose";
 
 const chatModel = mongoose.Schema(
