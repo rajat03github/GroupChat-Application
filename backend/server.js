@@ -4,10 +4,11 @@ import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
 import connectDB from "./database.js";
-
+import userRoutes from "./routes/userRoutes.js";
 const app = express();
 
 connectDB();
+app.use(express.json()); //! use this before routes
 
 app.use(
   cors({
@@ -19,14 +20,8 @@ app.get("/", (req, res) => {
   res.send("Working");
 });
 
-app.get("/chats", (req, res) => {
-  res.send(chats);
-});
+app.use("/api/users", userRoutes);
 
-app.get("/:id", (req, res) => {
-  const userChat = chats.find((c) => c._id === req.params.id);
-  res.send(userChat);
-});
 app.listen(process.env.PORT, () => {
   console.log(`Server Started on http://localhost:${process.env.PORT}`);
 });
