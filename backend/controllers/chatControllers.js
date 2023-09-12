@@ -1,7 +1,7 @@
 import Chat from "../models/ChatModel.js";
 import User from "../models/UserModel.js";
 
-const accessChat = async (req, res) => {
+const accessChatOnetoOne = async (req, res) => {
   //TODO ~ In summary, this code is searching for a one-on-one chat where both the current logged-in user (req.user._id) and the user specified by userId are participants. It then populates the users and latestMessage fields for that chat and stores the result in the isChat variable.
 
   try {
@@ -70,4 +70,68 @@ const accessChat = async (req, res) => {
   }
 };
 
-export { accessChat };
+const fetchChatsforCurrentUser = async (req, res) => {
+  try {
+    //! check users array that the current user is part of
+    //* then populate the Chat and sort with r.p.t updatedAt descending order/most recent
+
+    const result = await Chat.find({
+      users: { $elemMatch: { $eq: req.user._id } },
+    })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password")
+      .populate("latestMessage")
+      .sort({ updatedAt: -1 });
+
+    await User.populate(result, {
+      path: "latestMessage.sender",
+      select: "name pic email",
+    });
+
+    res.status(201).send(result);
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Some Error Occured !",
+    });
+  }
+};
+
+const createGroupChat = async (req, res) => {
+  if (!req.body.users || !req.body.name) {
+    return res.status(401).send({
+      success: false,
+      message: "Oops ! All FIELDS are REQUIRED ",
+    });
+  }
+
+  const users = JSON.parse(req.body.users); //users to add in group chat
+
+  if (users.length < 2) res.status(400).send("At least 2 USERS");
+
+  users.push(req.user); //all the users + current logged in user pushed in users array
+
+  try {
+    const groupChat = await Chat.create({
+      chatName: req.body.name,
+      users,
+      isGroupChat: true,
+      groupAdmin: req.user, // Current Logged-in user
+    });
+
+    //fetch Created Group Chat and Send to user
+
+    const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    res.status(200).json(fullGroupChat);
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Some Error Occured !",
+    });
+  }
+};
+
+export { accessChatOnetoOne, fetchChatsforCurrentUser, createGroupChat };
