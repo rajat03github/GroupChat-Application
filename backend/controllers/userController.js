@@ -92,4 +92,30 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser };
+//api/users/getusers?search=query
+const getUsers = async (req, res) => {
+  try {
+    //!If req.query.search exists (i.e., the user wants to perform a search), it constructs a search filter object called keyword.It uses the MongoDB $or operator to say that a user can match either their name or their email.
+
+    //*This filter specifies that you want to find users whose name or email matches the search term provided (req.query.search), and the matching should be case-insensitive (the $options: "i" part).
+
+    const keyword = req.query.search
+      ? {
+          // ! option 'i' means Case in-Sensitive
+          $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+          ],
+        }
+      : //! else nothing to do
+        {};
+
+    const users = await User.find(keyword).find({
+      _id: { $ne: req.user._id }, //! req.user obtained from auth Middleware
+    });
+    res.send(users);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export { registerUser, loginUser, getUsers };
