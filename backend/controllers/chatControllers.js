@@ -28,7 +28,7 @@ const accessChatOnetoOne = async (req, res) => {
         },
       ],
     })
-      .populate("users", "-password") //isChat object will include details about the users participating in the chat.
+      .populate("users", "-password") //Chat will be populated
       .populate("latestMessage"); //isChat object will also include information about the latest message in the Chat
 
     isChat = await User.populate(isChat, {
