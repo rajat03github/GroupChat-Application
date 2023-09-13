@@ -133,5 +133,91 @@ const createGroupChat = async (req, res) => {
     });
   }
 };
+const renameGroupChat = async (req, res) => {
+  try {
+    const { chatId, chatName } = req.body;
 
-export { accessChatOnetoOne, fetchChatsforCurrentUser, createGroupChat };
+    const updatedChat = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        chatName: chatName,
+      },
+      {
+        new: true, //will return new Name
+      }
+    )
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!updatedChat) {
+      res.status(404).send("Chat not found !");
+    } else {
+      res.json(updatedChat);
+    }
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Some Error Occured !",
+    });
+  }
+};
+const addToGroup = async (req, res) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    const added = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $push: { users: userId }, //Push the new User to the users array
+      },
+      { new: true } //will return latest
+    )
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!added) {
+      res.status(404).send("Chat not found !");
+    } else {
+      res.json(added);
+    }
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Some Error Occured !",
+    });
+  }
+};
+const removeFromGroup = async (req, res) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    const added = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $pull: { users: userId }, //Pull the present User from thee users array
+      },
+      { new: true } //will return latest
+    )
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!added) {
+      res.status(404).send("Chat not found !");
+    } else {
+      res.json(added);
+    }
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Some Error Occured !",
+    });
+  }
+};
+export {
+  accessChatOnetoOne,
+  fetchChatsforCurrentUser,
+  createGroupChat,
+  renameGroupChat,
+  addToGroup,
+  removeFromGroup,
+};
