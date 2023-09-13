@@ -67,6 +67,14 @@ const Login = () => {
       setLoading(false);
       navigate("/chats");
     } catch (error) {
+      setLoading(false);
+      toast({
+        title: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
       console.log(error);
     }
   };

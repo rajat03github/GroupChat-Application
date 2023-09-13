@@ -46,11 +46,14 @@ const registerUser = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    return res.status(404).json({
+      success: false,
+      message: "Something Occured",
+    });
   }
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -62,33 +65,36 @@ const loginUser = async (req, res) => {
     }
 
     const user = await User.findOne({ email }).select("+password");
-
-    const isPassMatched = await bcrypt.compare(password, user.password);
-
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
-        message: "Invalid Email/Password !",
-      });
-    } else {
-      res.status(201).json({
-        success: true,
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        pic: user.pic,
-        token: generateToken(user._id), //! USING TO MAKE TOKEN
+        message: "Invalid email or password",
       });
     }
+
+    const isPassMatched = await bcrypt.compare(password, user.password);
 
     if (!isPassMatched) {
       return res.status(404).json({
         success: false,
-        message: "Invalid Email/Password",
+        message: "Invalid email or password",
       });
     }
+
+    // If everything is successful, generate and send the token
+    res.status(201).json({
+      success: true,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      pic: user.pic,
+      token: generateToken(user._id), //! USING TO MAKE TOKEN
+    });
   } catch (error) {
-    console.log(error);
+    return res.status(404).json({
+      success: false,
+      message: "Invalid email or password",
+    });
   }
 };
 
