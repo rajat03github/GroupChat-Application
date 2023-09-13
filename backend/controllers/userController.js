@@ -121,7 +121,10 @@ const getUsers = async (req, res) => {
     });
     res.send(users);
   } catch (error) {
-    console.log(error);
+    res.status(401).json({
+      success: false,
+      message: "Something Occured",
+    });
   }
 };
 export { registerUser, loginUser, getUsers };
