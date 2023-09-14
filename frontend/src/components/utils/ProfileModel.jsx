@@ -17,6 +17,7 @@ import React from "react";
 
 const ProfileModel = ({ user, children }) => {
   //! onOpen is opening the model that is wrraped in , ie profile menu
+  //! on Open is in what is it that you want to open this in a model
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
