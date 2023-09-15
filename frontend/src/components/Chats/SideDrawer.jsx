@@ -13,6 +13,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Spinner,
   Text,
   Tooltip,
   useDisclosure,
@@ -85,9 +86,14 @@ const SideDrawer = () => {
       };
       const { data } = await axios.post(`${server}/chats`, { userId }, config);
 
+      //!IF CHATS ALREADY HAVE CHAT WITH THE ID , THEN APPEND THE CHAT DATA
+
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+
       setSelectedChat(data);
+
       setLoadingChat(false);
+
       onClose();
     } catch (error) {
       toast({
@@ -183,6 +189,7 @@ const SideDrawer = () => {
                 );
               })
             )}
+            {loadingChat && <Spinner ml={"auto"} display={"flex"} />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
