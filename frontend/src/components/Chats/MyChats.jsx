@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import ChatContext from "../../Context/ChatContext";
-import { Box, Button, useToast } from "@chakra-ui/react";
+import { Box, Button, Stack, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { server } from "../../App";
 import { AddIcon } from "@chakra-ui/icons";
+import ChatLoading from "../utils/ChatLoading";
 
 const MyChats = () => {
   const toast = useToast();
@@ -79,7 +80,25 @@ const MyChats = () => {
         w={"100%"}
         h={"100%"}
         borderRadius={"lg"}
-        overflowY={"hidden"}></Box>
+        overflowY={"hidden"}>
+        {chats ? (
+          <Stack overflowY={"scroll"}>
+            {chats.map((chat) => (
+              <Box
+                onClick={() => setSelectedChat(chat)}
+                cursor={"pointer"}
+                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                color={selectedChat === chat ? "white" : "black"}
+                px={3}
+                py={2}
+                borderRadius={"lg"}
+                key={chat._id}></Box>
+            ))}
+          </Stack>
+        ) : (
+          <ChatLoading />
+        )}
+      </Box>
     </Box>
   );
 };
