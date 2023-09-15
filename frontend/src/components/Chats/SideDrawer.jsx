@@ -21,12 +21,12 @@ import {
 import React, { useContext, useState } from "react";
 import { BellIcon, ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
 import ChatContext from "../../Context/ChatContext";
-import ProfileModel from "./ProfileModel";
+import ProfileModel from "../utils/ProfileModel";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../App";
-import ChatLoading from "./ChatLoading";
-import UserListItem from "./UserAvatars/UserListItem";
+import ChatLoading from "../utils/ChatLoading";
+import UserSideDrawer from "../utils/UserAvatars/UserList_SideDrawer";
 
 const SideDrawer = () => {
   const navigate = useNavigate();
@@ -147,7 +147,7 @@ const SideDrawer = () => {
             ) : (
               searchResult?.map((user) => {
                 return (
-                  <UserListItem
+                  <UserSideDrawer
                     key={user._id}
                     user={user}
                     accessChat={() => accessChat(user._id)}
