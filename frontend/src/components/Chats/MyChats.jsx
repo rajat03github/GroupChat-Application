@@ -25,7 +25,6 @@ const MyChats = () => {
       };
 
       const { data } = await axios.get(`${server}/chats`, config);
-      console.log(data);
       setChats(data);
     } catch (error) {
       toast({
@@ -67,7 +66,7 @@ const MyChats = () => {
         alignItems={"center"}>
         My Chats
         <Button
-          d="flex"
+          display="flex"
           fontSize={{ base: "17px", md: "10px", lg: "17px" }}
           rightIcon={<AddIcon />}>
           New Group Chat
