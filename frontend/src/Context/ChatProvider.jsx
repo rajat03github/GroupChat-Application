@@ -27,7 +27,8 @@ const ChatProvider = ({ children }) => {
         setChats,
         selectedChat,
         setSelectedChat,
-      }}>
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );

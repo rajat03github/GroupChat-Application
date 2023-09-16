@@ -117,7 +117,8 @@ const SideDrawer = () => {
         bg={"white"}
         w={"100%"}
         p={"5px 10px 5px 10px"}
-        borderWidth={"5px"}>
+        borderWidth={"5px"}
+      >
         <Tooltip hasArrow placement="bottom-end" label="Search Users">
           <Button variant={"ghost"} onClick={onOpen}>
             <Search2Icon />
@@ -184,7 +185,7 @@ const SideDrawer = () => {
                   <UserSideDrawer
                     key={user._id}
                     user={user}
-                    accessChat={() => accessChat(user._id)}
+                    handleFunction={() => accessChat(user._id)}
                   />
                 );
               })

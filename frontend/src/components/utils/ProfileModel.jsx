@@ -42,7 +42,8 @@ const ProfileModel = ({ user, children }) => {
             fontSize={"40px"}
             fontFamily={"Work sans"}
             display={"flex"}
-            justifyContent={"center"}>
+            justifyContent={"center"}
+          >
             {user.name}
           </ModalHeader>
           <ModalCloseButton />
@@ -50,7 +51,8 @@ const ProfileModel = ({ user, children }) => {
             display={"flex"}
             flexDir={"column"}
             alignItems={"center"}
-            justifyContent={"space-between"}>
+            justifyContent={"space-between"}
+          >
             <Image
               borderRadius={"full"}
               boxSize={"150px"}
@@ -59,7 +61,8 @@ const ProfileModel = ({ user, children }) => {
             />
             <Text
               fontSize={{ base: "28px", md: "30px" }}
-              fontFamily="Work sans">
+              fontFamily="Work sans"
+            >
               Email: {user.email}
             </Text>
           </ModalBody>
