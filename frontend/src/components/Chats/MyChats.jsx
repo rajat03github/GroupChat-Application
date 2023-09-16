@@ -6,6 +6,7 @@ import { server } from "../../App";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "../utils/ChatLoading";
 import { getSender } from "../../config/ChatLogics";
+import GroupChatModel from "../utils/GroupChatModel";
 
 const MyChats = () => {
   const toast = useToast();
@@ -54,7 +55,8 @@ const MyChats = () => {
       bg={"white"}
       w={{ base: "100%", md: "31%" }}
       borderRadius={"lg"}
-      borderWidth={"1px"}>
+      borderWidth={"1px"}
+    >
       <Box
         pb={3}
         px={3}
@@ -63,14 +65,18 @@ const MyChats = () => {
         display={"flex"}
         w={"100%"}
         justifyContent={"space-between"}
-        alignItems={"center"}>
+        alignItems={"center"}
+      >
         My Chats
-        <Button
-          display="flex"
-          fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-          rightIcon={<AddIcon />}>
-          New Group Chat
-        </Button>
+        <GroupChatModel>
+          <Button
+            display="flex"
+            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+            rightIcon={<AddIcon />}
+          >
+            New Group Chat
+          </Button>
+        </GroupChatModel>
       </Box>
       <Box
         display={"flex"}
@@ -80,7 +86,8 @@ const MyChats = () => {
         w={"100%"}
         h={"100%"}
         borderRadius={"lg"}
-        overflowY={"hidden"}>
+        overflowY={"hidden"}
+      >
         {chats ? (
           <Stack overflowY={"scroll"}>
             {chats.map((chat) => (
@@ -92,7 +99,8 @@ const MyChats = () => {
                 px={3}
                 py={2}
                 borderRadius={"lg"}
-                key={chat._id}>
+                key={chat._id}
+              >
                 <Text>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
