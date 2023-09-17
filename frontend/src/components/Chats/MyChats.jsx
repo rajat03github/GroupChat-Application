@@ -8,7 +8,7 @@ import ChatLoading from "../utils/ChatLoading";
 import { getSender } from "../../config/ChatLogics";
 import GroupChatModel from "../utils/GroupChatModel";
 
-const MyChats = () => {
+const MyChats = ({ fetchAgain }) => {
   const toast = useToast();
 
   const [loggedUser, setLoggedUser] = useState();
@@ -44,7 +44,7 @@ const MyChats = () => {
     fetchChats();
 
     // eslint-disable-next-line
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box

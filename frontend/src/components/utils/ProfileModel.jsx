@@ -55,7 +55,7 @@ const ProfileModel = ({ user, children }) => {
           >
             <Image
               borderRadius={"full"}
-              boxSize={"150px"}
+              boxSize={"230px"}
               src={user.pic}
               alt={user.name}
             />
@@ -63,14 +63,12 @@ const ProfileModel = ({ user, children }) => {
               fontSize={{ base: "28px", md: "30px" }}
               fontFamily="Work sans"
             >
-              Email: {user.email}
+              {user.email}
             </Text>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
+            <Button variant={"unstyled"} cursor={"default"} mr={3}></Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
