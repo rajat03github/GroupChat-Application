@@ -107,8 +107,6 @@ const createGroupChat = async (req, res) => {
 
   const users = JSON.parse(req.body.users); //users to add in group chat
 
-  if (users.length < 2) res.status(400).send("At least 2 USERS");
-
   users.push(req.user); //all the users + current logged in user pushed in users array
 
   try {
@@ -125,9 +123,9 @@ const createGroupChat = async (req, res) => {
       .populate("users", "-password")
       .populate("groupAdmin", "-password");
 
-    res.status(200).json(fullGroupChat);
+    return res.status(200).json(fullGroupChat);
   } catch (error) {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       message: "Some Error Occured !",
     });
