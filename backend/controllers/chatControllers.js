@@ -104,6 +104,7 @@ const createGroupChat = async (req, res) => {
       message: "Oops ! All FIELDS are REQUIRED ",
     });
   }
+  if (users.length < 2) return res.status(400).send("At least 2 USERS");
 
   const users = JSON.parse(req.body.users); //users to add in group chat
 
