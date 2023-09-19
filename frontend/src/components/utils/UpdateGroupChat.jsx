@@ -24,7 +24,7 @@ import axios from "axios";
 import { server } from "../../App";
 import UserSideDrawer from "./UserAvatars/UserList_SideDrawer";
 
-const UpdateGroupChat = ({ fetchAgain, setFetchAgain }) => {
+const UpdateGroupChat = ({ fetchAgain, setFetchAgain, getMessages }) => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -125,8 +125,8 @@ const UpdateGroupChat = ({ fetchAgain, setFetchAgain }) => {
 
       userToRemove._id === user._id ? setSelectedChat() : setSelectedChat(data);
 
+      getMessages(); //* all msgs would be refreshed
       setFetchAgain(!fetchAgain);
-
       setLoading(false);
     } catch (error) {
       toast({

@@ -49,7 +49,7 @@ const GroupChatModel = ({ children }) => {
         `${server}/users/getusers?search=${search}`,
         config
       );
-      console.log(data);
+
       setLoading(false);
       setSearchResults(data);
     } catch (error) {
