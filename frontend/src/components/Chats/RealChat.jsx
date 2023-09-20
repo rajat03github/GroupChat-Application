@@ -8,12 +8,13 @@ import {
   isSameSenderMargin,
   isSameUser,
 } from "../../config/ChatLogics";
+import ScrollableFeed from "react-scrollable-feed";
 
 const RealChat = ({ messages }) => {
   const { user } = useContext(ChatContext);
 
   return (
-    <div style={{ overflowX: "hidden", overflowY: "auto" }}>
+    <ScrollableFeed>
       {messages &&
         messages.map((msg, index) => {
           return (
@@ -60,7 +61,7 @@ const RealChat = ({ messages }) => {
             </div>
           );
         })}
-    </div>
+    </ScrollableFeed>
   );
 };
 

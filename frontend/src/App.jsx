@@ -7,6 +7,8 @@ import ChatProvider from "./Context/ChatProvider";
 
 export const server = "http://localhost:5000/api";
 
+export const ENDPOINT = "http://localhost:5000";
+
 function App() {
   return (
     <div className="App">
