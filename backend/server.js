@@ -6,6 +6,7 @@ import connectDB from "./database.js";
 import userRoutes from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
+import path from "path";
 const app = express();
 
 import { Server } from "socket.io";
@@ -26,6 +27,23 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/message", messageRoutes);
+
+//* --------------------DEPLOYMENT----------------------
+
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API Is Running !!!");
+  });
+}
+
+//* --------------------DEPLOYMENT----------------------
 
 const host = app.listen(process.env.PORT, () => {
   console.log(`Server Started on http://localhost:${process.env.PORT}`);
