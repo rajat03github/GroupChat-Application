@@ -34,6 +34,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const toast = useToast();
 
+  //* default Options for typing animation
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -43,7 +44,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     },
   };
 
-  const { user, selectedChat, setSelectedChat } = useContext(ChatContext);
+  const {
+    user,
+    selectedChat,
+    setSelectedChat,
+    notifications,
+    setNotifications,
+  } = useContext(ChatContext);
 
   const typingHandler = (event) => {
     setNewMessage(event.target.value);
@@ -157,12 +164,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
-      //if no chat selected or selected chat does not match the sender user
+      //if no chat selected or selected chat does not match the sender user then give notification
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         //*give notification
+        if (!notifications.includes(newMessageRecieved)) {
+          setNotifications([newMessageRecieved, ...notifications]);
+          setFetchAgain(!fetchAgain); //will refresh chats
+        }
       } else {
         setMessages([...messages, newMessageRecieved]);
       }
@@ -244,10 +255,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               )}
 
               <Input
+                onChange={typingHandler}
                 variant={"filled"}
                 bg={"#E0E0E0"}
                 placeholder="Enter a Message.."
-                onChange={typingHandler}
                 value={newMessage}
               />
             </FormControl>
